@@ -27,11 +27,11 @@ public class write {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String dateToday = today.format(formatter);
 
-        int arrListLen = read.readText(read.getPath(), "07.08.2023").size();
+        int arrListLen = read.readText(read.getPath(), dateToday).size();
 
         String[] forSum = new String[arrListLen];
         for(int b = 0;b<arrListLen;b++) {
-            forSum[b] = read.readText(read.getPath(), "07.08.2023").get(b);
+            forSum[b] = read.readText(read.getPath(), dateToday).get(b);
             sum += Double.parseDouble(forSum[b]);
         }
 
@@ -48,12 +48,20 @@ public class write {
             Cell suminfoCell = infoRow.createCell(5);
             suminfoCell.setCellValue("Toplam Kar");
 
+            if(arrListLen == 0) {
+                Row nullRow = page.createRow(1);
+                Cell nullDateCell = nullRow.createCell(3);
+                Cell nullSumCell = nullRow.createCell(5);
+                nullDateCell.setCellValue(dateToday);
+                nullSumCell.setCellValue(sum);
+            }
+
             int k = 0;
             String data = "";
 
             String[] dataArr = new String[arrListLen];
             for(int a = 0; a<arrListLen; a++) {
-                dataArr[a] = read.readText(read.getPath(), "07.08.2023").get(a);
+                dataArr[a] = read.readText(read.getPath(), dateToday).get(a);
                 System.out.println(dataArr[a]);
             }
 
