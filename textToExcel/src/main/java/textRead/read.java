@@ -4,6 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,18 +22,25 @@ public class read {
     public static String getPath() { return path; }
     public static String getDate() { return date; }
 
-    public static String readText(String path, String date) {
+    public static ArrayList<String> readText(String path, String date) {
+        ArrayList<String> kar = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader(path);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            LocalDate today = LocalDate.now();
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            String dateToday = today.format(format);
+
+            String tarih = "";
 
             String row;
             Pattern patternDate = Pattern.compile(date);
             String sell = "SATIŞ";
             Pattern patternSell = Pattern.compile(sell);
-            String gainLow = "\\d{1}.\\d{2}";
+            String gainLow = "Kar=\\d{1}.\\d{2}";
             Pattern patternGainLow = Pattern.compile(gainLow);
-            String gainHigh = "\\d{2}.\\d{2}";
+            String gainHigh = "Kar=\\d{2}.\\d{2}";
             Pattern patternGainHigh = Pattern.compile(gainHigh);
 
             while ((row = bufferedReader.readLine()) != null) {
@@ -39,23 +52,30 @@ public class read {
 
                 while (dateMatcher.find() && sellMatcher.find()) {
                     String matched = dateMatcher.group();
+
                     String sellMatched = sellMatcher.group();
 
                     //System.out.println(sellMatched + " - "+ matched);
 
-                    if(gainLowMatcher.find()){
+                    if (gainLowMatcher.find()) {
                         String gainLowMatched = gainLowMatcher.group();
-                        System.out.println(sellMatched + " - " + gainLowMatched + " - " + matched);
-                    } else if (gainHighMatcher.find()) {
+                        //System.out.println(sellMatched + " - " + gainLowMatched + " - " + matched);
+                        String gainLowLast = gainLowMatched.split("=")[1];
+                        kar.add(gainLowLast);
+                    }
+                    if (gainHighMatcher.find()) {
                         String gainHighMatched = gainHighMatcher.group();
-                        System.out.println(sellMatched + " - " + gainHighMatched + " - " + matched);
+                        //System.out.println(sellMatched + " - " + gainHighMatched + " - " + matched);
+                        String gainHighLast = gainHighMatched.split("=")[1];
+                        kar.add(gainHighLast);
                     }
                 }
             }
+            bufferedReader.close();
         } catch (IOException e) {
-
+            e.getMessage();
         }
-
-        return "";
+        //System.out.println(kar);
+        return kar;
     }
 }

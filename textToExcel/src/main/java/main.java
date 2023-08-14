@@ -1,8 +1,7 @@
 import textRead.read;
+import writeExcel.write;
 public class main {
     public static void main(String[] args){
-        String filePath = read.getPath();
-        String dataDate = read.getDate();
-        read.readText(filePath, dataDate);
+        write.write();
     }
 }
