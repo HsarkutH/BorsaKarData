@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 public class write {
     public static void write(){
         String filePath = "C:/robotsibirya(4)/robot1/";
-        String fileName = "Kar.xlsx";
+        String fileName = "TextToExcel.xlsx";
         double sum = 0;
 
         File excelFile = new File(filePath + fileName);
