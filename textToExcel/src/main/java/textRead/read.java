@@ -42,12 +42,15 @@ public class read {
             Pattern patternGainLow = Pattern.compile(gainLow);
             String gainHigh = "Kar=\\d{2}.\\d{2}";
             Pattern patternGainHigh = Pattern.compile(gainHigh);
+            String gainHigher = "Kar=\\d{3}.\\d{2}";
+            Pattern patternGainHigher = Pattern.compile(gainHigher);
 
             while ((row = bufferedReader.readLine()) != null) {
                 Matcher dateMatcher = patternDate.matcher(row);
                 Matcher sellMatcher = patternSell.matcher(row);
                 Matcher gainLowMatcher = patternGainLow.matcher(row);
                 Matcher gainHighMatcher = patternGainHigh.matcher(row);
+                Matcher gainHigherMatcher = patternGainHigher.matcher(row);
 
 
                 while (dateMatcher.find() && sellMatcher.find()) {
@@ -68,6 +71,11 @@ public class read {
                         //System.out.println(sellMatched + " - " + gainHighMatched + " - " + matched);
                         String gainHighLast = gainHighMatched.split("=")[1];
                         kar.add(gainHighLast);
+                    }
+                    if (gainHigherMatcher.find()) {
+                        String gainHigherMatched = gainHigherMatcher.group();
+                        String gainHigherLast = gainHigherMatched.split("=")[1];
+                        kar.add(gainHigherLast);
                     }
                 }
             }
